@@ -82,4 +82,26 @@ object BackendApi {
             val url = URL(apiUrl)
             "${url.protocol}://${url.host}"
         }.getOrDefault(apiUrl)
+
+    /**
+     * Cek apakah URL halaman ujian (CBT host) dapat diakses.
+     * Lakukan HEAD request ringan — hanya cek HTTP response, bukan isi halaman.
+     * @return `true` jika server merespon dengan HTTP 2xx/3xx.
+     */
+    suspend fun checkCbtHost(cbtUrl: String): Boolean = withContext(Dispatchers.IO) {
+        runCatching {
+            val conn = (URL(cbtUrl).openConnection() as HttpURLConnection).apply {
+                requestMethod = "HEAD"
+                connectTimeout = 8_000
+                readTimeout = 8_000
+                instanceFollowRedirects = true
+            }
+            try {
+                val code = conn.responseCode
+                code in 200..399
+            } finally {
+                conn.disconnect()
+            }
+        }.getOrDefault(false)
+    }
 }

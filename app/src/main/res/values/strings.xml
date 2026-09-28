@@ -16,6 +16,14 @@
     <string name="dashboard_status_ready">Siap Ujian</string>
     <string name="dashboard_status_not_ready">Tidak Tersedia</string>
     <string name="dashboard_info_hint">Pastikan tidak ada aplikasi floating atau perekam layar aktif.</string>
+    <string name="dashboard_status_cbt_server">Server Ujian</string>
+    <string name="dashboard_status_api_password">API Password</string>
+    <string name="dashboard_status_online">Online</string>
+    <string name="dashboard_status_offline">Offline</string>
+    <string name="dashboard_status_valid">Tersedia</string>
+    <string name="dashboard_status_invalid">Belum Aktif</string>
+    <string name="dashboard_status_checking">Mengecek…</string>
+    <string name="dashboard_status_expired">Kedaluwarsa</string>
     <string name="dashboard_btn_start">MULAI CBT</string>
     <string name="dashboard_btn_enter">Masuk Ujian</string>
 
