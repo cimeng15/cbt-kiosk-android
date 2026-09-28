@@ -431,44 +431,72 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                         error = null
                         isLoading = true
                         scope.launch {
-                            // Gunakan settings yang sudah di-fetch jika valid,
-                            // kalau tidak fetch ulang.
-                            val cachedSettings = status.settings
-                            val result = if (cachedSettings != null
-                                && !cachedSettings.isExpired
-                                && cachedSettings.exitPassword.isNotBlank()
-                            ) {
-                                Result.success(cachedSettings)
-                            } else {
-                                withContext(Dispatchers.IO) {
-                                    BackendApi.fetchSettings(AppConfig.API_SETTINGS_URL)
-                                }
+                            // ═══ STEP 1: Cek URL ujian online ═══
+                            status = status.copy(cbtHostOnline = null) // reset → spinner
+                            val hostOnline = BackendApi.checkCbtHost(AppConfig.CBT_HOST)
+                            status = status.copy(cbtHostOnline = hostOnline)
+
+                            if (!hostOnline) {
+                                error = "Server ujian tidak dapat dijangkau. Pastikan perangkat terhubung ke jaringan."
+                                status = status.copy(apiPasswordOk = null, apiDetail = null, settings = null)
+                                isLoading = false
+                                return@launch
+                            }
+
+                            // ═══ STEP 2: Cek API password valid ═══
+                            status = status.copy(apiPasswordOk = null) // reset → spinner
+                            val result = withContext(Dispatchers.IO) {
+                                BackendApi.fetchSettings(AppConfig.API_SETTINGS_URL)
                             }
 
                             result.onSuccess { settings ->
-                                if (settings.isExpired) {
-                                    error = "Password di server sudah kedaluwarsa. Aktifkan di panel CBT."
-                                    isLoading = false
-                                } else if (settings.exitPassword.isBlank()) {
-                                    error = "Password kosong. Set password di panel CBT."
-                                    isLoading = false
-                                } else {
-                                    val cbtUrl = BackendApi.extractCbtUrl(AppConfig.API_SETTINGS_URL)
-                                    withContext(Dispatchers.IO) {
-                                        ConfigStore.saveConfig(
-                                            context = context,
-                                            cbtUrl = cbtUrl,
-                                            apiUrl = AppConfig.API_SETTINGS_URL,
-                                            password = settings.exitPassword,
-                                            expiresAt = settings.expiresAt,
+                                when {
+                                    settings.isExpired -> {
+                                        status = status.copy(
+                                            apiPasswordOk = false,
+                                            apiDetail = "Kedaluwarsa",
+                                            settings = settings,
                                         )
-                                        ConfigStore.appendLog(context, "Exam started: $cbtUrl")
+                                        error = "Password di server sudah kedaluwarsa. Aktifkan di panel CBT."
+                                        isLoading = false
                                     }
-                                    isLoading = false
-                                    onStartExam()
+                                    settings.exitPassword.isBlank() -> {
+                                        status = status.copy(
+                                            apiPasswordOk = false,
+                                            apiDetail = "Password kosong",
+                                            settings = settings,
+                                        )
+                                        error = "Password kosong. Set password di panel CBT."
+                                        isLoading = false
+                                    }
+                                    else -> {
+                                        // ═══ STEP 3: Semua OK → simpan & masuk kiosk ═══
+                                        status = status.copy(
+                                            apiPasswordOk = true,
+                                            apiDetail = null,
+                                            settings = settings,
+                                        )
+                                        val cbtUrl = BackendApi.extractCbtUrl(AppConfig.API_SETTINGS_URL)
+                                        withContext(Dispatchers.IO) {
+                                            ConfigStore.saveConfig(
+                                                context = context,
+                                                cbtUrl = cbtUrl,
+                                                apiUrl = AppConfig.API_SETTINGS_URL,
+                                                password = settings.exitPassword,
+                                                expiresAt = settings.expiresAt,
+                                            )
+                                            ConfigStore.appendLog(context, "Exam started: $cbtUrl")
+                                        }
+                                        isLoading = false
+                                        onStartExam()
+                                    }
                                 }
                             }.onFailure { e ->
-                                error = e.message
+                                status = status.copy(
+                                    apiPasswordOk = false,
+                                    apiDetail = e.message ?: "Gagal",
+                                )
+                                error = "Gagal terhubung ke server: ${e.message}"
                                 isLoading = false
                             }
                         }
