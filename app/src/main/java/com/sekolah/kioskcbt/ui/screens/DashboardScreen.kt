@@ -235,20 +235,36 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 Spacer(Modifier.height(28.dp))
 
                 Box(contentAlignment = Alignment.Center) {
+                    // Outer glow — lebar, halus
                     Box(
                         modifier = Modifier
-                            .size(100.dp)
-                            .blur(20.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Secondary.copy(alpha = 0.20f)),
+                            .size(120.dp)
+                            .blur(30.dp)
+                            .clip(CircleShape)
+                            .background(
+                                Brush.radialGradient(
+                                    colors = listOf(
+                                        Secondary.copy(alpha = 0.25f),
+                                        Primary.copy(alpha = 0.08f),
+                                        Color.Transparent,
+                                    ),
+                                ),
+                            ),
                     )
+                    // Logo — rounded besar, shadow halus
                     Image(
                         painter = painterResource(R.drawable.logo_yayasan),
                         contentDescription = "Logo SMK",
                         modifier = Modifier
-                            .size(80.dp)
-                            .shadow(6.dp, RoundedCornerShape(16.dp))
-                            .clip(RoundedCornerShape(16.dp)),
+                            .size(84.dp)
+                            .shadow(
+                                elevation = 12.dp,
+                                shape = RoundedCornerShape(24.dp),
+                                ambientColor = Primary.copy(alpha = 0.3f),
+                                spotColor = Secondary.copy(alpha = 0.25f),
+                            )
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(Color.White),
                         contentScale = ContentScale.Crop,
                     )
                 }

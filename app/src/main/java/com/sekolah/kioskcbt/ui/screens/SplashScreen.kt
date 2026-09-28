@@ -47,9 +47,9 @@ fun SplashScreen(status: String) {
                 painter = painterResource(R.drawable.logo_yayasan),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.Fit,
+                    .size(110.dp)
+                    .clip(RoundedCornerShape(24.dp)),
+                contentScale = ContentScale.Crop,
             )
             Spacer(Modifier.height(20.dp))
             Text(
