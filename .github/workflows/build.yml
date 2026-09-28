@@ -3,11 +3,11 @@ name: Build & Release APK
 on:
   push:
     tags:
-      - 'v*'        # trigger saat push tag v1.0, v1.1, dll
-  workflow_dispatch:  # bisa trigger manual dari GitHub UI
+      - 'v*'
+  workflow_dispatch:
 
 permissions:
-  contents: write    # untuk membuat Release & upload asset
+  contents: write
 
 jobs:
   build:
@@ -26,19 +26,30 @@ jobs:
           cache: 'gradle'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        run: |
+          # ubuntu-latest sudah punya ANDROID_HOME, tapi pastikan platform & build-tools tersedia
+          echo "ANDROID_HOME=${ANDROID_HOME:-$HOME/android-sdk}" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=${ANDROID_HOME:-$HOME/android-sdk}" >> $GITHUB_ENV
+
+          # Install SDK components jika belum ada
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+            "platforms;android-34" \
+            "build-tools;34.0.0" \
+            "platform-tools" > /dev/null 2>&1
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
       - name: Build Debug APK
-        run: ./gradlew :app:assembleDebug --no-daemon
+        run: ./gradlew :app:assembleDebug --no-daemon --console=plain
 
       - name: Rename APK
         run: |
           VERSION="${GITHUB_REF_NAME:-dev}"
           cp app/build/outputs/apk/debug/app-debug.apk "cbt-smkdt-${VERSION}.apk"
           echo "APK_NAME=cbt-smkdt-${VERSION}.apk" >> $GITHUB_ENV
+          ls -lh "cbt-smkdt-${VERSION}.apk"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -57,9 +68,9 @@ jobs:
             ## CBT Kiosk Android ${{ github.ref_name }}
 
             ### Download
-            Unduh APK di bawah, lalu install ke perangkat Android (min SDK 26 / Android 8.0+).
+            Unduh file `.apk` di bawah, lalu install ke perangkat Android (min SDK 26 / Android 8.0+).
 
-            ### Install
+            ### Install via ADB
             ```
             adb install ${{ env.APK_NAME }}
             ```
