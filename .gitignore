@@ -1,0 +1,20 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Keystore — jangan pernah commit
+*.jks
+*.keystore
+keystore.properties
+
+# OS
+Thumbs.db
+*.log

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CBT SMKDT</string>
+    <string name="app_full_name">Aplikasi Ujian CBT SMKDATA</string>
+
+    <!-- Dashboard / Landing Page -->
+    <string name="setup_title">Dashboard Ujian</string>
+    <string name="start_exam">Mulai Ujian</string>
+    <string name="fetching">Mengambil pengaturan dari server…</string>
+    <string name="dashboard_badge_locked">SISTEM UJIAN TERKUNCI</string>
+    <string name="dashboard_title">CBT EXAM SMKDT</string>
+    <string name="dashboard_subtitle">Computer-Based Test Client Kiosk resmi berstandar pengawasan terpadu.</string>
+    <string name="dashboard_header_label">CBT EXAM</string>
+    <string name="dashboard_header_lock">TERKUNCI</string>
+    <string name="dashboard_status_title">Status Perangkat &amp; Server</string>
+    <string name="dashboard_status_ready">Siap Ujian</string>
+    <string name="dashboard_status_not_ready">Tidak Tersedia</string>
+    <string name="dashboard_info_hint">Pastikan tidak ada aplikasi floating atau perekam layar aktif.</string>
+    <string name="dashboard_btn_start">MULAI CBT</string>
+    <string name="dashboard_btn_enter">Masuk Ujian</string>
+
+    <!-- Unlock -->
+    <string name="enter_password">Masukkan Password</string>
+    <string name="attempts_remaining">%1$d percobaan tersisa</string>
+    <string name="locked_out">Terlalu banyak percobaan salah. Tetap terkunci.</string>
+
+    <!-- Umum -->
+    <string name="back">Kembali</string>
+    <string name="cancel">Batal</string>
+    <string name="error">Error</string>
+    <string name="ok">OK</string>
+
+    <!-- Device admin -->
+    <string name="device_admin_label">Kiosk CBT Device Admin</string>
+    <string name="device_admin_desc">Mengaktifkan lock task mode untuk kiosk CBT</string>
+</resources>
