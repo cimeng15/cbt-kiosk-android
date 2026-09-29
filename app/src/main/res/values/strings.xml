@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CBT SMKDT</string>
-    <string name="app_full_name">Aplikasi Ujian CBT SMKDATA</string>
+    <string name="app_name">SKADA EXAM</string>
+    <string name="app_full_name">SKADA EXAM</string>
 
     <!-- Dashboard / Landing Page -->
     <string name="setup_title">Dashboard Ujian</string>
     <string name="start_exam">Mulai Ujian</string>
     <string name="fetching">Mengambil pengaturan dari server…</string>
     <string name="dashboard_badge_locked">SISTEM UJIAN TERKUNCI</string>
-    <string name="dashboard_title">CBT EXAM SMKDT</string>
+    <string name="dashboard_title">SKADA EXAM</string>
     <string name="dashboard_subtitle">Computer-Based Test Client Kiosk resmi berstandar pengawasan terpadu.</string>
-    <string name="dashboard_header_label">CBT EXAM</string>
+    <string name="dashboard_header_label">SKADA EXAM</string>
     <string name="dashboard_header_lock">TERKUNCI</string>
     <string name="dashboard_status_title">Status Perangkat &amp; Server</string>
     <string name="dashboard_status_ready">Siap Ujian</string>

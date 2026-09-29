@@ -1,6 +1,7 @@
 package com.sekolah.kioskcbt.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -47,9 +48,10 @@ fun SplashScreen(status: String) {
                 painter = painterResource(R.drawable.logo_yayasan),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(110.dp)
-                    .clip(RoundedCornerShape(24.dp)),
-                contentScale = ContentScale.Crop,
+                    .size(96.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color.White),
+                contentScale = ContentScale.Fit,
             )
             Spacer(Modifier.height(20.dp))
             Text(

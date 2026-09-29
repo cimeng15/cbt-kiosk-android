@@ -238,14 +238,14 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 Box(contentAlignment = Alignment.Center) {
                     Box(
                         modifier = Modifier
-                            .size(90.dp)
-                            .blur(24.dp)
+                            .size(76.dp)
+                            .blur(20.dp)
                             .clip(CircleShape)
                             .background(
                                 Brush.radialGradient(
                                     colors = listOf(
-                                        Secondary.copy(alpha = 0.20f),
-                                        Primary.copy(alpha = 0.06f),
+                                        Secondary.copy(alpha = 0.18f),
+                                        Primary.copy(alpha = 0.05f),
                                         Color.Transparent,
                                     ),
                                 ),
@@ -255,16 +255,16 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                         painter = painterResource(R.drawable.logo_yayasan),
                         contentDescription = "Logo Aplikasi",
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(52.dp)
                             .shadow(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(20.dp),
-                                ambientColor = Primary.copy(alpha = 0.2f),
-                                spotColor = Secondary.copy(alpha = 0.15f),
+                                elevation = 6.dp,
+                                shape = RoundedCornerShape(14.dp),
+                                ambientColor = Primary.copy(alpha = 0.18f),
+                                spotColor = Secondary.copy(alpha = 0.12f),
                             )
-                            .clip(RoundedCornerShape(20.dp))
+                            .clip(RoundedCornerShape(14.dp))
                             .background(Color.White),
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.Fit,
                     )
                 }
 
