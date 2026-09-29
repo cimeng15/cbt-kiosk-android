@@ -18,3 +18,7 @@ keystore.properties
 # OS
 Thumbs.db
 *.log
+
+# Source assets di root (sudah dicopy ke res/drawable)
+/logo aplikasi.jpeg
+/landing page.jpeg

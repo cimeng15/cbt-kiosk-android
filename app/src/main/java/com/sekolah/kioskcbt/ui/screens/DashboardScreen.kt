@@ -232,44 +232,43 @@ fun DashboardScreen(onStartExam: () -> Unit) {
             ) {
 
                 // ── Hero Section ──
-                Spacer(Modifier.height(28.dp))
+                Spacer(Modifier.height(24.dp))
 
+                // Logo aplikasi kecil di atas
                 Box(contentAlignment = Alignment.Center) {
-                    // Outer glow — lebar, halus
                     Box(
                         modifier = Modifier
-                            .size(120.dp)
-                            .blur(30.dp)
+                            .size(90.dp)
+                            .blur(24.dp)
                             .clip(CircleShape)
                             .background(
                                 Brush.radialGradient(
                                     colors = listOf(
-                                        Secondary.copy(alpha = 0.25f),
-                                        Primary.copy(alpha = 0.08f),
+                                        Secondary.copy(alpha = 0.20f),
+                                        Primary.copy(alpha = 0.06f),
                                         Color.Transparent,
                                     ),
                                 ),
                             ),
                     )
-                    // Logo — rounded besar, shadow halus
                     Image(
                         painter = painterResource(R.drawable.logo_yayasan),
-                        contentDescription = "Logo SMK",
+                        contentDescription = "Logo Aplikasi",
                         modifier = Modifier
-                            .size(84.dp)
+                            .size(64.dp)
                             .shadow(
-                                elevation = 12.dp,
-                                shape = RoundedCornerShape(24.dp),
-                                ambientColor = Primary.copy(alpha = 0.3f),
-                                spotColor = Secondary.copy(alpha = 0.25f),
+                                elevation = 8.dp,
+                                shape = RoundedCornerShape(20.dp),
+                                ambientColor = Primary.copy(alpha = 0.2f),
+                                spotColor = Secondary.copy(alpha = 0.15f),
                             )
-                            .clip(RoundedCornerShape(24.dp))
+                            .clip(RoundedCornerShape(20.dp))
                             .background(Color.White),
                         contentScale = ContentScale.Crop,
                     )
                 }
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(12.dp))
 
                 Surface(
                     shape = RoundedCornerShape(50),
@@ -317,6 +316,24 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 32.dp),
+                )
+
+                // Landing page hero image
+                Spacer(Modifier.height(20.dp))
+
+                Image(
+                    painter = painterResource(R.drawable.landing_page),
+                    contentDescription = "Landing Page",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(160.dp)
+                        .shadow(
+                            elevation = 6.dp,
+                            shape = RoundedCornerShape(16.dp),
+                            ambientColor = Primary.copy(alpha = 0.15f),
+                        )
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentScale = ContentScale.Crop,
                 )
 
                 // ══════════════════════════════════
