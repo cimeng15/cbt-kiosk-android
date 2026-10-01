@@ -27,8 +27,15 @@
     <string name="dashboard_btn_start">MULAI CBT</string>
     <string name="dashboard_btn_enter">Masuk Ujian</string>
 
+    <!-- Splash -->
+    <string name="splash_caption">PLATFORM UJIAN BERBASIS DIGITAL</string>
+    <string name="splash_footer">SMK DARUT TAQWA · TERKUNCI &amp; TERPANTAU</string>
+
     <!-- Unlock -->
     <string name="enter_password">Masukkan Password</string>
+    <string name="unlock_subtitle">Password diberikan pengawas untuk keluar dari mode ujian.</string>
+    <string name="unlock_placeholder">Password keluar</string>
+    <string name="unlock_button">Buka Kunci</string>
     <string name="attempts_remaining">%1$d percobaan tersisa</string>
     <string name="locked_out">Terlalu banyak percobaan salah. Tetap terkunci.</string>
 

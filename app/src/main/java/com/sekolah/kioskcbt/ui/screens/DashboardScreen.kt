@@ -1,5 +1,6 @@
 package com.sekolah.kioskcbt.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -63,13 +64,7 @@ import com.sekolah.kioskcbt.data.AppConfig
 import com.sekolah.kioskcbt.data.BackendApi
 import com.sekolah.kioskcbt.data.ConfigStore
 import com.sekolah.kioskcbt.data.KioskSettings
-import com.sekolah.kioskcbt.ui.theme.InversePrimary
-import com.sekolah.kioskcbt.ui.theme.OnTertiaryContainer
-import com.sekolah.kioskcbt.ui.theme.Primary
-import com.sekolah.kioskcbt.ui.theme.Secondary
-import com.sekolah.kioskcbt.ui.theme.SurfaceContainerLow
-import com.sekolah.kioskcbt.ui.theme.SurfaceContainerLowest
-import com.sekolah.kioskcbt.ui.theme.TertiaryFixed
+import com.sekolah.kioskcbt.ui.theme.skadaAccents
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -138,9 +133,11 @@ fun DashboardScreen(onStartExam: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(MaterialTheme.colorScheme.background),
     ) {
-        // ── Gradient blur background ──
+        // ── Gradient glow background ──
+        // Memakai `glow` dari tema supaya intensitasnya ikut menyesuaikan:
+        // tipis di mode terang, lebih pekat di mode gelap.
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,8 +146,8 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 .background(
                     Brush.verticalGradient(
                         colors = listOf(
-                            Secondary.copy(alpha = 0.10f),
-                            Primary.copy(alpha = 0.05f),
+                            MaterialTheme.skadaAccents.glow.copy(alpha = 0.10f),
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                             Color.Transparent,
                         ),
                     ),
@@ -164,7 +161,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
             // ══════════════════════════════════
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                color = MaterialTheme.skadaAccents.card.copy(alpha = 0.9f),
                 shadowElevation = 1.dp,
             ) {
                 Row(
@@ -179,7 +176,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                             modifier = Modifier
                                 .size(8.dp)
                                 .clip(CircleShape)
-                                .background(OnTertiaryContainer),
+                                .background(MaterialTheme.skadaAccents.success),
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
@@ -191,10 +188,12 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
+                    // Chip "TERKUNCI" — pakai successContainer agar kontras
+                    // tetap benar di terang maupun gelap.
                     Surface(
                         shape = RoundedCornerShape(50),
-                        color = TertiaryFixed,
-                        shadowElevation = 1.dp,
+                        color = MaterialTheme.skadaAccents.successContainer,
+                        shadowElevation = 0.dp,
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
@@ -204,7 +203,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                                 imageVector = Icons.Filled.Lock,
                                 contentDescription = null,
                                 modifier = Modifier.size(14.dp),
-                                tint = OnTertiaryContainer,
+                                tint = MaterialTheme.skadaAccents.onSuccessContainer,
                             )
                             Spacer(Modifier.width(4.dp))
                             Text(
@@ -213,7 +212,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                                     fontWeight = FontWeight.Bold,
                                     letterSpacing = 1.sp,
                                 ),
-                                color = OnTertiaryContainer,
+                                color = MaterialTheme.skadaAccents.onSuccessContainer,
                             )
                         }
                     }
@@ -244,35 +243,46 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                             .background(
                                 Brush.radialGradient(
                                     colors = listOf(
-                                        Secondary.copy(alpha = 0.18f),
-                                        Primary.copy(alpha = 0.05f),
+                                        MaterialTheme.skadaAccents.glow.copy(alpha = 0.18f),
+                                        MaterialTheme.colorScheme.primary.copy(alpha = 0.05f),
                                         Color.Transparent,
                                     ),
                                 ),
                             ),
                     )
-                    Image(
-                        painter = painterResource(R.drawable.logo_yayasan),
-                        contentDescription = "Logo Aplikasi",
+                    // Logo punya latar putih solid: di mode gelap kotak putihnya
+                    // menyala dan terlihat "nempel". Solusinya bungkus dengan
+                    // container terang ber-border tipis agar menyatu dengan tema.
+                    Surface(
                         modifier = Modifier
                             .size(52.dp)
                             .shadow(
                                 elevation = 6.dp,
                                 shape = RoundedCornerShape(14.dp),
-                                ambientColor = Primary.copy(alpha = 0.18f),
-                                spotColor = Secondary.copy(alpha = 0.12f),
-                            )
-                            .clip(RoundedCornerShape(14.dp))
-                            .background(Color.White),
-                        contentScale = ContentScale.Fit,
-                    )
+                                ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+                                spotColor = MaterialTheme.skadaAccents.glow.copy(alpha = 0.12f),
+                            ),
+                        shape = RoundedCornerShape(14.dp),
+                        color = MaterialTheme.skadaAccents.card,
+                        border = BorderStroke(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                        ),
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.logo_yayasan),
+                            contentDescription = "Logo Aplikasi",
+                            modifier = Modifier.padding(3.dp),
+                            contentScale = ContentScale.Fit,
+                        )
+                    }
                 }
 
                 Spacer(Modifier.height(12.dp))
 
                 Surface(
                     shape = RoundedCornerShape(50),
-                    color = Secondary.copy(alpha = 0.10f),
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.10f),
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
@@ -282,7 +292,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                             imageVector = Icons.Filled.Verified,
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
-                            tint = Secondary,
+                            tint = MaterialTheme.colorScheme.secondary,
                         )
                         Spacer(Modifier.width(6.dp))
                         Text(
@@ -291,20 +301,22 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                                 fontWeight = FontWeight.Bold,
                                 letterSpacing = 1.2.sp,
                             ),
-                            color = Secondary,
+                            color = MaterialTheme.colorScheme.secondary,
                         )
                     }
                 }
 
                 Spacer(Modifier.height(8.dp))
 
+                // Judul: `primary` otomatis menjadi navy di mode terang dan
+                // pastel-biru di mode gelap, jadi tidak pernah tenggelam.
                 Text(
                     text = stringResource(R.string.dashboard_title),
                     style = MaterialTheme.typography.headlineLarge.copy(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = (-0.5).sp,
                     ),
-                    color = Primary,
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
                 )
 
@@ -330,7 +342,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                         .shadow(
                             elevation = 6.dp,
                             shape = RoundedCornerShape(16.dp),
-                            ambientColor = Primary.copy(alpha = 0.15f),
+                            ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                         )
                         .clip(RoundedCornerShape(16.dp)),
                     contentScale = ContentScale.Crop,
@@ -344,8 +356,11 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = SurfaceContainerLowest),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.skadaAccents.card,
+                    ),
+                    border = BorderStroke(1.dp, MaterialTheme.skadaAccents.hairline),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
 
@@ -367,7 +382,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                         }
 
                         Spacer(Modifier.height(12.dp))
-                        Divider(color = SurfaceContainerLow)
+                        Divider(color = MaterialTheme.skadaAccents.hairline)
                         Spacer(Modifier.height(12.dp))
 
                         // ── Row 1: Server Ujian ──
@@ -397,7 +412,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
-                            color = SurfaceContainerLow,
+                            color = MaterialTheme.skadaAccents.inset,
                         ) {
                             Row(
                                 modifier = Modifier.padding(10.dp),
@@ -407,7 +422,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                                     imageVector = Icons.Filled.Info,
                                     contentDescription = null,
                                     modifier = Modifier.size(16.dp),
-                                    tint = Primary,
+                                    tint = MaterialTheme.colorScheme.primary,
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 Text(
@@ -444,6 +459,16 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 // ══════════════════════════════════
                 Spacer(Modifier.height(32.dp))
 
+                // Saat belum siap (server/API belum OK) tombol tampil "disabled".
+                // Dulu: navy 50% alpha + teks putih → di mode gelap nyaris
+                // tak terbaca. Sekarang: memakai warna netral yang punya
+                // kontras benar di kedua tema.
+                val primaryContent = if (allReady) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
+
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -451,14 +476,15 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                     shape = RoundedCornerShape(12.dp),
                     enabled = !isLoading,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Primary,
-                        contentColor = Color.White,
-                        disabledContainerColor = Primary.copy(alpha = 0.5f),
-                        disabledContentColor = Color.White.copy(alpha = 0.7f),
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = primaryContent,
+                        disabledContainerColor = MaterialTheme.skadaAccents.disabledTrack,
+                        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 6.dp,
                         pressedElevation = 2.dp,
+                        disabledElevation = 0.dp,
                     ),
                     onClick = {
                         error = null
@@ -538,7 +564,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                     if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(22.dp),
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             strokeWidth = 2.dp,
                         )
                         Spacer(Modifier.width(10.dp))
@@ -569,28 +595,32 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                                     ),
                                 )
                             }
-                            Surface(
-                                shape = RoundedCornerShape(50),
-                                color = Color.White.copy(alpha = 0.10f),
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(
-                                        start = 10.dp, top = 4.dp, end = 8.dp, bottom = 4.dp,
-                                    ),
-                                    verticalAlignment = Alignment.CenterVertically,
+                            // Pill "Masuk Ujian": hanya muncul saat siap ujian,
+                            // supaya tidak menyesatkan (dulu selalu tampil).
+                            if (allReady) {
+                                Surface(
+                                    shape = RoundedCornerShape(50),
+                                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.14f),
                                 ) {
-                                    Text(
-                                        text = stringResource(R.string.dashboard_btn_enter),
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = InversePrimary,
-                                    )
-                                    Spacer(Modifier.width(4.dp))
-                                    Icon(
-                                        imageVector = Icons.Filled.ArrowForward,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(16.dp),
-                                        tint = Color.White,
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(
+                                            start = 10.dp, top = 4.dp, end = 8.dp, bottom = 4.dp,
+                                        ),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.dashboard_btn_enter),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onPrimary,
+                                        )
+                                        Spacer(Modifier.width(4.dp))
+                                        Icon(
+                                            imageVector = Icons.Filled.ArrowForward,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(16.dp),
+                                            tint = MaterialTheme.colorScheme.onPrimary,
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -624,18 +654,23 @@ private fun OverallStatusBadge(allReady: Boolean, isChecking: Boolean) {
                 color = MaterialTheme.colorScheme.outline,
             )
         } else {
+            val statusColor = if (allReady) {
+                MaterialTheme.skadaAccents.success
+            } else {
+                MaterialTheme.colorScheme.error
+            }
             Box(
                 modifier = Modifier
                     .size(6.dp)
                     .clip(CircleShape)
-                    .background(if (allReady) OnTertiaryContainer else MaterialTheme.colorScheme.error),
+                    .background(statusColor),
             )
             Spacer(Modifier.width(4.dp))
             Text(
                 text = if (allReady) stringResource(R.string.dashboard_status_ready)
                 else stringResource(R.string.dashboard_status_not_ready),
                 style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                color = if (allReady) OnTertiaryContainer else MaterialTheme.colorScheme.error,
+                color = statusColor,
             )
         }
     }
@@ -690,9 +725,10 @@ private fun StatusRow(
                 }
             }
             true -> {
+                val success = MaterialTheme.skadaAccents.success
                 Surface(
                     shape = RoundedCornerShape(50),
-                    color = OnTertiaryContainer.copy(alpha = 0.12f),
+                    color = success.copy(alpha = 0.14f),
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
@@ -702,13 +738,13 @@ private fun StatusRow(
                             modifier = Modifier
                                 .size(5.dp)
                                 .clip(CircleShape)
-                                .background(OnTertiaryContainer),
+                                .background(success),
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
                             text = okText,
                             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                            color = OnTertiaryContainer,
+                            color = success,
                         )
                     }
                 }

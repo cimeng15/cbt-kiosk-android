@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,9 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.sekolah.kioskcbt.ui.theme.skadaAccents
 import com.sekolah.kioskcbt.webview.KioskWebView
 
 /**
@@ -43,6 +46,12 @@ fun KioskScreen(
 ) {
     var webViewRef by remember { mutableStateOf<KioskWebView?>(null) }
     var isRefreshing by remember { mutableStateOf(false) }
+
+    // Warna diambil dari tema di level @Composable (factory AndroidView bukan
+    // konteks composable, jadi tidak boleh memanggil MaterialTheme di dalamnya).
+    val refreshColor = MaterialTheme.colorScheme.primary.toArgb()
+    val refreshTrack = MaterialTheme.skadaAccents.inset.toArgb()
+    val exitScrim = MaterialTheme.skadaAccents.scrim
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -71,7 +80,8 @@ fun KioskScreen(
                         webView.reload()
                     }
                     // Sinkronkan state refresh indicator
-                    setColorSchemeColors(0xFF1A73E8.toInt())
+                    setColorSchemeColors(refreshColor)
+                    setProgressBackgroundColorSchemeColor(refreshTrack)
                 }
             },
             update = { swipeLayout ->
@@ -80,6 +90,9 @@ fun KioskScreen(
         )
 
         // ── Tombol Exit: pojok kanan atas, opacity 60%, icon saja ──
+        // Chip ini menumpuk di atas WebView yang warnanya tidak bisa diprediksi,
+        // jadi sengaja memakai scrim gelap + ikon putih: kontrasnya terjamin
+        // di light maupun dark mode.
         IconButton(
             onClick = onUnlockClick,
             modifier = Modifier
@@ -90,7 +103,7 @@ fun KioskScreen(
                 .size(36.dp)
                 .clip(CircleShape),
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = Color.Black.copy(alpha = 0.3f),
+                containerColor = exitScrim,
                 contentColor = Color.White,
             ),
         ) {

@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+      Tema dasar (MODE GELAP).
+
+      Sebelumnya hanya mengganti jenis parent dan windowBackground menjadi
+      Hitam pekat (#000000) — itu yang membuat transisi ke konten Compose
+      navy (#080E22) terlihat seperti garis/tepi terpotong.
+      Sekarang semua warna jendela disamakan dengan DarkColors di Theme.kt,
+      dan ikon status bar dibuat terang.
+    -->
     <style name="Theme.KioskCBT" parent="android:Theme.Material.NoActionBar">
-        <item name="android:statusBarColor">@color/seed_primary</item>
-        <item name="android:navigationBarColor">@color/seed_primary</item>
-        <item name="android:windowBackground">@color/black</item>
+        <item name="android:windowBackground">@color/window_background</item>
+
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:navigationBarColor">@color/navigation_bar</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>

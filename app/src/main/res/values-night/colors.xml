@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Warna jendela untuk MODE GELAP — disamakan dengan DarkColors di Theme.kt
+      supaya system bar menyatu dengan konten Compose.
+    -->
+    <color name="window_background">#FF080E22</color>
+    <color name="status_bar">#FF080E22</color>
+    <color name="navigation_bar">#FF080E22</color>
+</resources>
