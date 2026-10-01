@@ -20,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -51,7 +50,7 @@ fun KioskScreen(
     // konteks composable, jadi tidak boleh memanggil MaterialTheme di dalamnya).
     val refreshColor = MaterialTheme.colorScheme.primary.toArgb()
     val refreshTrack = MaterialTheme.skadaAccents.inset.toArgb()
-    val exitScrim = MaterialTheme.skadaAccents.scrim
+    val exitControl = MaterialTheme.skadaAccents.floatingControl
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -89,21 +88,22 @@ fun KioskScreen(
             },
         )
 
-        // ── Tombol Exit: pojok kanan atas, opacity 60%, icon saja ──
-        // Chip ini menumpuk di atas WebView yang warnanya tidak bisa diprediksi,
-        // jadi sengaja memakai scrim gelap + ikon putih: kontrasnya terjamin
-        // di light maupun dark mode.
+        // ── Tombol Exit: pojok kanan atas, icon saja ──
+        // Chip ini menumpuk di atas WebView yang warnanya tidak bisa
+        // diprediksi (bisa halaman putih). Perhitungan kontras: tanpa alpha
+        // pada modifier, container hitam 65% di atas halaman putih memberi
+        // 7.00:1 untuk ikon putih. Sebelumnya (hitam 30% x alpha 0.6 =
+        // efektif 18%) hanya 1.30:1 — praktis tidak terlihat.
         IconButton(
             onClick = onUnlockClick,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .statusBarsPadding()
                 .padding(top = 8.dp, end = 8.dp)
-                .alpha(0.6f)
                 .size(36.dp)
                 .clip(CircleShape),
             colors = IconButtonDefaults.iconButtonColors(
-                containerColor = exitScrim,
+                containerColor = exitControl,
                 contentColor = Color.White,
             ),
         ) {

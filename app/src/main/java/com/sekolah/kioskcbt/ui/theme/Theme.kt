@@ -100,8 +100,10 @@ data class SkadaAccents(
     val onSuccessContainer: Color,
     /** Garis tipis pemisah kartu. */
     val hairline: Color,
-    /** Lapisan peredup di belakang dialog / tombol di atas WebView. */
+    /** Lapisan peredup di belakang dialog (khusus mode terang). */
     val scrim: Color,
+    /** Latar tombol mengambang di atas WebView (harus tetap kontras di 2 mode). */
+    val floatingControl: Color,
     /** Aksen terang untuk gradient hero & glow. */
     val glow: Color,
 )
@@ -110,11 +112,14 @@ private val LightAccents = SkadaAccents(
     card = Color(0xFFFFFFFF),
     inset = Color(0xFFE6EEFF),
     disabledTrack = Color(0xFFD5E3FC),
-    success = Color(0xFF00795A),
+    // #00694B (bukan #00795A): pada chip ber-alpha 14% di atas putih,
+    // #00795A hanya mencapai 4.42:1 — di bawah ambang WCAG AA.
+    success = Color(0xFF00694B),
     successContainer = Color(0xFFD3F5E5),
     onSuccessContainer = Color(0xFF00553C),
     hairline = Color(0xFFE2E8F8),
     scrim = Color(0xFF0D1C2E).copy(alpha = 0.45f),
+    floatingControl = Color(0xFF000000).copy(alpha = 0.65f),
     glow = Color(0xFF0051D5),
 )
 
@@ -128,6 +133,7 @@ private val DarkAccents = SkadaAccents(
     hairline = Color(0xFF2A3852),
     // Di mode gelap latar sudah gelap — scrim cukup ditipiskan, bukan digelapkan.
     scrim = Color(0xFF050B1C).copy(alpha = 0.55f),
+    floatingControl = Color(0xFF000000).copy(alpha = 0.65f),
     glow = Color(0xFF7FA6FF),
 )
 
