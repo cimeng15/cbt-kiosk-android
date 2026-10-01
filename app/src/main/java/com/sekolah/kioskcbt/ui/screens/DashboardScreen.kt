@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +20,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
@@ -455,29 +456,25 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                 }
 
                 // ══════════════════════════════════
-                // 4. TOMBOL "MULAI CBT" — DI TENGAH
+                // 4. TOMBOL "START UJIAN" — DI TENGAH
                 // ══════════════════════════════════
                 Spacer(Modifier.height(32.dp))
 
-                // Saat belum siap (server/API belum OK) tombol tampil "disabled".
-                // Dulu: navy 50% alpha + teks putih → di mode gelap nyaris
-                // tak terbaca. Sekarang: memakai warna netral yang punya
-                // kontras benar di kedua tema.
-                val primaryContent = if (allReady) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                }
-
+                // Label + spinner di tengah tombol, teks putih.
+                // Warna tombol diambil dari `skadaAccents.cta` (selalu navy
+                // pekat) supaya teks putih tetap terbaca di mode terang
+                // maupun gelap — di mode gelap `colorScheme.primary` adalah
+                // navy pastel dan teks putih di atasnya tidak kontras.
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp),
                     enabled = !isLoading,
+                    contentPadding = PaddingValues(horizontal = 20.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = primaryContent,
+                        containerColor = MaterialTheme.skadaAccents.cta,
+                        contentColor = Color.White,
                         disabledContainerColor = MaterialTheme.skadaAccents.disabledTrack,
                         disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
@@ -564,7 +561,7 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                     if (isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(22.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             strokeWidth = 2.dp,
                         )
                         Spacer(Modifier.width(10.dp))
@@ -575,54 +572,25 @@ fun DashboardScreen(onStartExam: () -> Unit) {
                             ),
                         )
                     } else {
+                        // Rata tengah: ikon + label sebagai satu grup.
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center,
                         ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Filled.PlayArrow,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(22.dp),
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(
-                                    text = stringResource(R.string.dashboard_btn_start),
-                                    style = MaterialTheme.typography.labelLarge.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        letterSpacing = 1.sp,
-                                    ),
-                                )
-                            }
-                            // Pill "Masuk Ujian": hanya muncul saat siap ujian,
-                            // supaya tidak menyesatkan (dulu selalu tampil).
-                            if (allReady) {
-                                Surface(
-                                    shape = RoundedCornerShape(50),
-                                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.14f),
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(
-                                            start = 10.dp, top = 4.dp, end = 8.dp, bottom = 4.dp,
-                                        ),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.dashboard_btn_enter),
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onPrimary,
-                                        )
-                                        Spacer(Modifier.width(4.dp))
-                                        Icon(
-                                            imageVector = Icons.Filled.ArrowForward,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(16.dp),
-                                            tint = MaterialTheme.colorScheme.onPrimary,
-                                        )
-                                    }
-                                }
-                            }
+                            Icon(
+                                imageVector = if (allReady) Icons.Filled.PlayArrow
+                                else Icons.Filled.CloudOff,
+                                contentDescription = null,
+                                modifier = Modifier.size(22.dp),
+                            )
+                            Spacer(Modifier.width(10.dp))
+                            Text(
+                                text = stringResource(R.string.dashboard_btn_start),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    letterSpacing = 0.5.sp,
+                                ),
+                            )
                         }
                     }
                 }

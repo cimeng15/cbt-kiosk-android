@@ -104,6 +104,16 @@ data class SkadaAccents(
     val scrim: Color,
     /** Latar tombol mengambang di atas WebView (harus tetap kontras di 2 mode). */
     val floatingControl: Color,
+    /**
+     * Warna tombol aksi utama ("Start Ujian").
+     *
+     * Sengaja terpisah dari `colorScheme.primary`: di mode gelap primary
+     * adalah navy pastel (#B3C5FF) sehingga teks PUTIH di atasnya hanya
+     * 1.9:1. Token ini selalu cukup gelap agar teks putih terbaca
+     * (>= 4.5:1) sekaligus tetap terlihat bentuknya di atas latar
+     * (>= 3:1).
+     */
+    val cta: Color,
     /** Aksen terang untuk gradient hero & glow. */
     val glow: Color,
 )
@@ -120,6 +130,7 @@ private val LightAccents = SkadaAccents(
     hairline = Color(0xFFE2E8F8),
     scrim = Color(0xFF0D1C2E).copy(alpha = 0.45f),
     floatingControl = Color(0xFF000000).copy(alpha = 0.65f),
+    cta = Color(0xFF021064),
     glow = Color(0xFF0051D5),
 )
 
@@ -134,6 +145,8 @@ private val DarkAccents = SkadaAccents(
     // Di mode gelap latar sudah gelap — scrim cukup ditipiskan, bukan digelapkan.
     scrim = Color(0xFF050B1C).copy(alpha = 0.55f),
     floatingControl = Color(0xFF000000).copy(alpha = 0.65f),
+    // Bukan primary gelap (#B3C5FF) — lihat catatan pada `cta`.
+    cta = Color(0xFF1D4ED8),
     glow = Color(0xFF7FA6FF),
 )
 

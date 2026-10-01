@@ -24,7 +24,7 @@
     <string name="dashboard_status_invalid">Belum Aktif</string>
     <string name="dashboard_status_checking">Mengecek…</string>
     <string name="dashboard_status_expired">Kedaluwarsa</string>
-    <string name="dashboard_btn_start">MULAI CBT</string>
+    <string name="dashboard_btn_start">Start Ujian</string>
     <string name="dashboard_btn_enter">Masuk Ujian</string>
 
     <!-- Splash -->
